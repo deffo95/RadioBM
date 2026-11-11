@@ -46,7 +46,7 @@ h2{font-size:24px;color:var(--banner)}
 .form .full{grid-column:1/-1}
 label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);min-width:0}
 label .opt{text-transform:none;letter-spacing:0;font-weight:700}
-input,textarea{font:600 16px/1.4 var(--body);color:var(--ink);background:#fff;border:2px solid var(--wood);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
+input,textarea,select{font:600 16px/1.4 var(--body);color:var(--ink);background:#fff;border:2px solid var(--wood);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
 textarea{min-height:80px;resize:vertical}
 input[type=file]{background:var(--sand-light);padding:7px}
 .check{flex-direction:row;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:15px;font-weight:700;color:var(--ink)}
@@ -276,10 +276,11 @@ function renderEditor(){
     (editTr!=null?'':'<label class="full">Audiobestand <span class="opt">(mp3 of m4a, max. '+MAX_MB+' MB)</span><input id="tFile" type="file" accept="audio/*,.mp3,.m4a,.ogg,.wav"></label>')+
     '<label>Titel<input id="tTitle" maxlength="120" value="'+esc(tr.titel||"")+'"></label>'+
     '<label>Artiest <span class="opt">(optioneel)</span><input id="tArtist" maxlength="120" value="'+esc(tr.artiest||"")+'"></label>'+
+    '<label class="full">Uit aflevering <span class="opt">(optioneel)</span><select id="tEp">'+episodeOptions(tr.aflevering)+'</select></label>'+
     '<div class="row full"><button class="btn" type="submit">'+(editTr!=null?'Wijziging bewaren':'Nummer toevoegen')+'</button>'+(editTr!=null?'<button class="btn plain" type="button" id="tCancel">Annuleren</button>':'')+'<span class="msg" id="tMsg" role="status"></span></div></form>';
   h += data.muziek.length ? '<ul class="list">'+data.muziek.map(function(t,i){
       var k="tr:"+i, isNew = !!pending.uploads[t.bestand];
-      return '<li class="item'+(editTr===i?' editing':'')+'"><span class="num">'+(i+1)+'</span><div><div class="t">'+esc(t.titel)+(isNew?'<span class="tagnew">Nieuw</span>':'')+'</div><div class="s">'+esc(t.artiest||"")+(t.artiest?' · ':'')+esc(t.bestand)+'</div></div>'+
+      return '<li class="item'+(editTr===i?' editing':'')+'"><span class="num">'+(i+1)+'</span><div><div class="t">'+esc(t.titel)+(isNew?'<span class="tagnew">Nieuw</span>':'')+'</div><div class="s">'+esc(t.artiest||"")+(t.artiest?' · ':'')+(hasEp(t)?'uit aflevering #'+esc(t.aflevering)+' · ':'')+esc(t.bestand)+'</div></div>'+
         '<div class="acts"><button class="mini" data-move="'+i+':-1" aria-label="Omhoog"'+(i===0?' disabled':'')+'>↑</button><button class="mini" data-move="'+i+':1" aria-label="Omlaag"'+(i===data.muziek.length-1?' disabled':'')+'>↓</button><button class="mini" data-edit-tr="'+i+'">Bewerken</button><button class="del'+(confirmKey===k?' confirm':'')+'" data-del="'+k+'">'+(confirmKey===k?'Zeker?':'Verwijderen')+'</button></div></li>';
     }).join('')+'</ul>' : '<p class="empty">Nog geen nummers.</p>';
   h += '</section>';
@@ -307,10 +308,12 @@ function bindEditor(){
   if(tf) tf.onchange = function(){ var f=tf.files[0], ti=$("tTitle"); if(f && !ti.value) ti.value = f.name.replace(/\.[^.]+$/,"").replace(/[_]+/g," "); };
   $("trForm").onsubmit = function(e){
     e.preventDefault();
-    var t = $("tTitle").value.trim(), a = $("tArtist").value.trim();
+    var t = $("tTitle").value.trim(), a = $("tArtist").value.trim(), ev = $("tEp").value;
+    var epNr = ev==="" ? null : (isNaN(+ev) ? ev : +ev);
     if(editTr!=null){
       if(!t) return setMsg("tMsg","Geef het nummer een titel.",true);
       data.muziek[editTr].titel = t; data.muziek[editTr].artiest = a;
+      if(epNr==null) delete data.muziek[editTr].aflevering; else data.muziek[editTr].aflevering = epNr;
       editTr = null; change(); renderEditor(); return;
     }
     var f = tf.files[0];
@@ -321,7 +324,8 @@ function bindEditor(){
     var base = "muziek/"+slug(t), path = base+"."+ext, n = 2;
     var taken = function(p){ return data.muziek.some(function(x){ return x.bestand===p; }); };
     while(taken(path)) path = base+"-"+(n++)+"."+ext;
-    data.muziek.push({titel:t, artiest:a, bestand:path});
+    var nt = {titel:t, artiest:a, bestand:path}; if(epNr!=null) nt.aflevering = epNr;
+    data.muziek.push(nt);
     pending.uploads[path] = f;
     pending.deletes = pending.deletes.filter(function(p){ return p!==path; });
     change(); renderEditor(); setMsg("tMsg","Toegevoegd. Klik onderaan op Publiceren om het te uploaden.",false,true);
@@ -340,6 +344,18 @@ function bindEditor(){
       if(pending.uploads[t.bestand]) delete pending.uploads[t.bestand];
       else if(/^muziek\//.test(t.bestand)) pending.deletes.push(t.bestand); }
     change(); renderEditor(); }; });
+}
+
+function hasEp(t){ return t.aflevering!=null && t.aflevering!==""; }
+function episodeOptions(current){
+  var eps = data.afleveringen.slice().sort(function(a,b){ return (b.nummer||0)-(a.nummer||0); });
+  var cur = current==null ? "" : String(current), found = cur==="";
+  var o = '<option value="">Geen aflevering</option>' + eps.map(function(e){
+    var v = String(e.nummer); if(v===cur) found = true;
+    return '<option value="'+esc(v)+'"'+(v===cur?' selected':'')+'>#'+esc(e.nummer)+' · '+esc(e.titel)+'</option>';
+  }).join('');
+  if(!found) o += '<option value="'+esc(cur)+'" selected>#'+esc(cur)+' (aflevering bestaat niet meer)</option>';
+  return o;
 }
 
 /* ---------- publiceren ---------- */

@@ -114,6 +114,11 @@ section{padding-block:40px 24px}
 .tinfo{min-width:0}
 .ttitle{font-weight:900;font-size:17px;line-height:1.25;overflow-wrap:anywhere}
 .tartist{font-size:14px;color:var(--ink-soft);font-weight:700}
+.tsub{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;margin-top:2px}
+.tfrom{display:inline-flex;align-items:center;gap:5px;font:800 13px/1.2 var(--body);color:var(--banner);background:none;border:0;padding:2px 0;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;text-align:left}
+.tfrom svg{width:14px;height:14px;flex:none;fill:currentColor}
+.tfrom:hover{color:var(--banner-dark)}
+.tfrom.plain{text-decoration:none;color:var(--ink-soft);cursor:default}
 .tdur{font-variant-numeric:tabular-nums;font-weight:800;color:var(--ink-soft)}
 .eq{display:inline-flex;gap:2px;align-items:flex-end;height:14px;margin-left:8px;vertical-align:middle}
 .eq i{width:3px;background:var(--banner);border-radius:1px;animation:eq .9s ease-in-out infinite}
@@ -238,15 +243,29 @@ function renderGrid(){
       '<div class="info">'+(cur?'<span class="now-tag">Nu geselecteerd</span>':'')+'<div class="ep-date">'+esc(fmtDate(e.datum))+(e._ex?'<span class="example">Voorbeeld</span>':'')+'</div><h3>'+esc(e.titel)+'</h3></div></button>';
   }).join('');
   g.querySelectorAll("[data-ep]").forEach(function(b){ b.onclick = function(){
-    sel = +b.dataset.ep;
-    history.replaceState(null,"","#aflevering-"+eps[sel].nummer);
-    var auto = !!eps[sel]._id; if(auto) audio.pause();
-    renderStage(auto); renderGrid();
-    document.getElementById("stage").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth", block:"start"});
+    var i = +b.dataset.ep; selectEp(i, !!eps[i]._id);
   }; });
 }
+function selectEp(i, autoplay){
+  sel = i;
+  history.replaceState(null,"","#aflevering-"+eps[sel].nummer);
+  if(autoplay) audio.pause();
+  renderStage(autoplay); renderGrid();
+  document.getElementById("stage").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth", block:"start"});
+}
+function epIndexByNr(nr){ return eps.findIndex(function(e){ return String(e.nummer)===String(nr); }); }
 function trackRow(t,i){
-  return '<li class="track" data-i="'+i+'"><button class="tplay" data-play="'+i+'" aria-label="Speel '+esc(t.titel)+'">'+IC.play+'</button><div class="tinfo"><div class="ttitle">'+esc(t.titel)+'<span class="eq" hidden><i></i><i></i><i></i></span></div>'+(t.artiest?'<div class="tartist">'+esc(t.artiest)+'</div>':'')+'</div><span class="tdur" data-dur="'+i+'"></span></li>';
+  return '<li class="track" data-i="'+i+'"><button class="tplay" data-play="'+i+'" aria-label="Speel '+esc(t.titel)+'">'+IC.play+'</button><div class="tinfo"><div class="ttitle">'+esc(t.titel)+'<span class="eq" hidden><i></i><i></i><i></i></span></div>'+trackSub(t)+'</div><span class="tdur" data-dur="'+i+'"></span></li>';
+}
+function trackSub(t){
+  var parts = [];
+  if(t.artiest) parts.push('<span class="tartist">'+esc(t.artiest)+'</span>');
+  if(t.aflevering!=null && t.aflevering!==""){
+    var ei = epIndexByNr(t.aflevering), e = eps[ei];
+    var label = 'Uit aflevering #'+esc(t.aflevering)+(e&&e.titel&&!e._ex?': '+esc(e.titel):'');
+    parts.push(ei>=0 ? '<button class="tfrom" data-goto-ep="'+ei+'">'+'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="2" width="8" height="13" rx="4"/><path d="M5 11a7 7 0 0 0 14 0h-2a5 5 0 0 1-10 0zM11 18h2v4h-2z"/></svg>'+label+'</button>' : '<span class="tfrom plain">'+label+'</span>');
+  }
+  return parts.length ? '<div class="tsub">'+parts.join('')+'</div>' : '';
 }
 function playerHtml(){
   var has = tracks.length>0, d = has?'':' disabled';
@@ -283,7 +302,7 @@ function syncTime(){
 function syncPlayer(){
   var t = tracks[cur], playing = t && !audio.paused, pp = document.getElementById("pPlay");
   pp.innerHTML = playing?IC.pause:IC.play; pp.setAttribute("aria-label", playing?"Pauze":"Afspelen");
-  if(t) document.getElementById("pTitle").innerHTML = esc(t.titel)+(t.artiest?' <span>· '+esc(t.artiest)+'</span>':'');
+  if(t) document.getElementById("pTitle").innerHTML = esc(t.titel)+(t.artiest?' <span>· '+esc(t.artiest)+'</span>':'')+(t.aflevering!=null&&t.aflevering!==''?' <span>· aflevering #'+esc(t.aflevering)+'</span>':'');
   document.querySelectorAll(".track").forEach(function(li){
     var i=+li.dataset.i, on=i===cur;
     li.classList.toggle("now",on); li.classList.toggle("paused",on&&!playing);
@@ -301,6 +320,7 @@ function loadDurations(){
 }
 function bind(){
   var pa = document.getElementById("playAll"); if(pa) pa.onclick = function(){ playIdx(0); };
+  document.querySelectorAll("[data-goto-ep]").forEach(function(b){ b.onclick = function(){ selectEp(+b.dataset.gotoEp, false); }; });
   document.getElementById("pPlay").onclick = toggle;
   document.getElementById("pNext").onclick = next;
   document.getElementById("pPrev").onclick = prev;
