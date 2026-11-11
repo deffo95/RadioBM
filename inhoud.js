@@ -56,5 +56,11 @@ window.RADIO_BM = {
       "omschrijving": ""
     }
   ],
-  "muziek": []
+  "muziek": [
+    {
+      "titel": "Battle Madness 3 Anthem",
+      "artiest": "The Grand BM Choir",
+      "bestand": "muziek/battle-madness-3-anthem.mp3"
+    }
+  ]
 };
