@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Radio BM</title>
+<meta name="description" content="Radio BM: de podcast en de muziek van Battle Madness.">
+<meta property="og:title" content="Radio BM">
+<meta property="og:description" content="De podcast en de muziek van Battle Madness.">
+<meta property="og:image" content="afbeeldingen/logo.jpg">
+<meta name="theme-color" content="#3a6cb7">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@500;700;800;900&display=swap">
+<style>
+/* Arena: blauwe lucht met het Radio BM-bord, zandstenen vloer met rode banieren, houten speler onderaan */
+:root{
+  --sky:#5d93d9; --sky-deep:#3a6cb7; --sand:#e6c48f; --wood:#6e4524; --wood-dark:#3d240f; --wood-light:#946033;
+  --gold:#f5b93f; --gold-light:#ffdc85; --cream:#fdf3dc; --banner:#a5302a; --banner-dark:#6e1c18;
+  --ink:#2b1a0b; --ink-soft:#5c4127;
+  --display:"Luckiest Guy","Arial Black",Impact,sans-serif;
+  --body:"Nunito",ui-rounded,"Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--sand);color:var(--ink);font:500 16px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+img{max-width:100%}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold-light);outline-offset:2px;border-radius:6px}
+.gutter{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1080px;margin:0 auto}
+
+.topbar{position:sticky;top:0;z-index:20;background:var(--sky-deep);border-bottom:4px solid var(--wood-dark);padding-top:env(safe-area-inset-top,0px)}
+.topbar .wrap{display:flex;align-items:center;gap:16px;min-height:58px;flex-wrap:wrap;padding-block:6px}
+.brand{font-family:var(--display);font-size:24px;letter-spacing:.02em;color:var(--cream);text-decoration:none;text-shadow:2px 2px 0 var(--wood-dark)}
+.brand b{color:var(--gold);font-weight:400}
+.nav{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.nav a{font-family:var(--display);font-size:16px;letter-spacing:.04em;color:var(--cream);text-decoration:none;padding:8px 12px 6px;border-radius:8px}
+.nav a:hover{background:rgba(255,255,255,.12)}
+
+.hero{background:linear-gradient(var(--sky) 0%,var(--sky) 55%,var(--sand) 55%);padding-block:28px 8px}
+.hero-frame{border:6px solid var(--wood-dark);border-radius:18px;overflow:hidden;box-shadow:0 8px 0 var(--wood-dark),0 18px 30px rgba(43,26,11,.35);background:var(--wood)}
+.hero-frame img{display:block;width:100%;height:auto;aspect-ratio:1400/672}
+.hero-copy{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:26px}
+.hero-copy p{margin:0;font-weight:800;font-size:clamp(17px,2.4vw,21px);max-width:34ch;text-wrap:balance}
+.onair{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);letter-spacing:.06em;font-size:14px;color:var(--banner);margin-bottom:4px}
+.onair i{width:10px;height:10px;border-radius:50%;background:var(--banner);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(165,48,42,.3)}50%{box-shadow:0 0 0 7px rgba(165,48,42,0)}}
+.cta-row{display:flex;gap:10px;flex-wrap:wrap}
+
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-size:17px;letter-spacing:.04em;line-height:1;padding:12px 18px 10px;border-radius:10px;border:3px solid var(--wood-dark);text-decoration:none;color:var(--wood-dark);background:var(--gold);box-shadow:0 4px 0 var(--wood-dark);transition:transform .08s,box-shadow .08s}
+.btn:hover{background:var(--gold-light)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--wood-dark)}
+.btn.red{background:var(--banner);color:var(--cream)}
+.btn.red:hover{background:#bd3b33}
+.btn.small{font-size:14px;padding:8px 12px 6px;border-width:2px;box-shadow:0 3px 0 var(--wood-dark)}
+.btn svg{width:18px;height:18px;flex:none;fill:currentColor}
+
+main{background:
+  repeating-linear-gradient(0deg,transparent 0 63px,rgba(120,80,40,.16) 63px 66px),
+  repeating-linear-gradient(90deg,transparent 0 127px,rgba(120,80,40,.10) 127px 130px),
+  var(--sand);padding-bottom:130px}
+section{padding-block:40px 24px}
+.banner-head{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.banner{display:inline-flex;align-items:center;gap:12px;background:var(--banner);color:var(--cream);padding:14px 26px 26px 20px;border:3px solid var(--gold);border-bottom:0;clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%);box-shadow:inset 0 -6px 0 var(--banner-dark)}
+.banner h2{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(26px,4.6vw,38px);letter-spacing:.03em;line-height:1;text-shadow:3px 3px 0 var(--banner-dark)}
+.banner svg{width:30px;height:30px;flex:none}
+.banner-head .meta{font-weight:800;color:var(--ink-soft);padding-bottom:20px}
+.banner-head .push{margin-left:auto;padding-bottom:18px}
+
+/* video */
+.stage{border:4px solid var(--wood-dark);border-radius:16px;overflow:hidden;background:var(--cream);box-shadow:0 6px 0 var(--wood-dark);margin-bottom:26px}
+.video{position:relative;aspect-ratio:16/9;max-width:100%;background:var(--wood-dark)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.thumb{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:var(--wood-dark);display:block}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(30,15,5,.55))}
+.bigplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1;width:84px;height:84px;border-radius:50%;background:var(--banner);border:4px solid var(--gold);display:grid;place-items:center;box-shadow:0 5px 0 var(--wood-dark);transition:transform .12s}
+.thumb:hover .bigplay{transform:translate(-50%,-50%) scale(1.08)}
+.bigplay svg{width:34px;height:34px;margin-left:5px;fill:var(--cream)}
+.novideo{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:16px;background:radial-gradient(circle at 50% 45%,rgba(255,220,133,.3),transparent 60%),linear-gradient(160deg,var(--wood-light),var(--wood-dark));color:var(--cream);font-weight:800}
+.novideo .num{display:block;font-family:var(--display);font-weight:400;font-size:clamp(64px,11vw,110px);line-height:.9;color:var(--gold);text-shadow:4px 4px 0 var(--wood-dark)}
+.tag{position:absolute;left:14px;top:14px;z-index:2;font-family:var(--display);font-size:13px;letter-spacing:.08em;background:var(--gold);color:var(--wood-dark);padding:6px 10px 4px;border-radius:6px;border:2px solid var(--wood-dark)}
+.stage-body{padding:20px 24px 22px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 20px;align-items:start}
+.stage-body h3{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(22px,3vw,30px);line-height:1.1;letter-spacing:.02em;text-wrap:balance}
+.stage-body .ep-desc{grid-column:1/-1}
+.ep-date{font-size:13px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--banner)}
+.ep-desc{margin:0;color:var(--ink-soft);overflow-wrap:anywhere}
+.example{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;background:var(--ink-soft);color:var(--cream);padding:2px 7px;border-radius:5px;vertical-align:middle;margin-left:6px}
+
+.ep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.ep-card{display:flex;flex-direction:column;background:var(--cream);border:3px solid var(--wood-dark);border-radius:14px;overflow:hidden;box-shadow:0 4px 0 var(--wood-dark);padding:0;text-align:left;color:var(--ink);transition:transform .1s}
+.ep-card:hover{transform:translateY(-2px)}
+.ep-card[aria-current="true"]{outline:4px solid var(--gold);outline-offset:-1px}
+.ep-thumb{position:relative;aspect-ratio:16/9;max-width:100%;background:linear-gradient(160deg,var(--wood-light),var(--wood-dark));overflow:hidden}
+.ep-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.badge{position:absolute;left:10px;bottom:10px;min-width:54px;height:44px;padding:0 10px;border-radius:10px;background:linear-gradient(160deg,var(--wood-light),var(--wood));border:3px solid var(--wood-dark);display:grid;place-items:center;font-family:var(--display);font-size:22px;line-height:1;color:var(--gold);text-shadow:2px 2px 0 var(--wood-dark)}
+.ep-card .info{padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.ep-card h3{margin:0;font-family:var(--display);font-weight:400;font-size:19px;line-height:1.15;letter-spacing:.02em}
+.ep-card .now-tag{font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--wood-dark);background:var(--gold);border-radius:5px;padding:2px 7px;align-self:flex-start}
+
+/* muziek */
+.board{background:linear-gradient(var(--wood),var(--wood-dark));border:4px solid var(--wood-dark);border-radius:16px;padding:10px;box-shadow:0 6px 0 var(--wood-dark)}
+.tracklist{list-style:none;margin:0;padding:0;background:var(--cream);border-radius:10px;overflow:hidden}
+.track{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px 14px;border-bottom:2px dashed rgba(110,69,36,.25)}
+.track:last-child{border-bottom:0}
+.track.now{background:var(--gold-light)}
+.tplay{width:44px;height:44px;border-radius:50%;border:3px solid var(--wood-dark);background:var(--gold);display:grid;place-items:center;box-shadow:0 3px 0 var(--wood-dark);padding:0}
+.tplay svg{width:18px;height:18px;fill:var(--wood-dark)}
+.tinfo{min-width:0}
+.ttitle{font-weight:900;font-size:17px;line-height:1.25;overflow-wrap:anywhere}
+.tartist{font-size:14px;color:var(--ink-soft);font-weight:700}
+.tdur{font-variant-numeric:tabular-nums;font-weight:800;color:var(--ink-soft)}
+.eq{display:inline-flex;gap:2px;align-items:flex-end;height:14px;margin-left:8px;vertical-align:middle}
+.eq i{width:3px;background:var(--banner);border-radius:1px;animation:eq .9s ease-in-out infinite}
+.eq i:nth-child(2){animation-delay:-.3s}.eq i:nth-child(3){animation-delay:-.6s}
+.paused .eq i{animation-play-state:paused}
+@keyframes eq{0%,100%{height:4px}50%{height:14px}}
+.empty{background:var(--cream);border:3px dashed var(--wood-light);border-radius:12px;padding:28px 22px;text-align:center;color:var(--ink-soft);font-weight:700}
+.empty strong{display:block;font-family:var(--display);font-weight:400;font-size:22px;color:var(--ink);letter-spacing:.02em;margin-bottom:4px}
+
+.player{position:fixed;left:0;right:0;bottom:0;z-index:25;background:repeating-linear-gradient(90deg,rgba(0,0,0,.06) 0 2px,transparent 2px 9px),linear-gradient(var(--wood-light),var(--wood));border-top:4px solid var(--wood-dark);box-shadow:0 -6px 18px rgba(43,26,11,.3);padding-bottom:env(safe-area-inset-bottom,0px)}
+.player .wrap{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;padding-block:10px}
+.controls{display:flex;gap:8px;align-items:center}
+.pbtn{width:40px;height:40px;border-radius:50%;border:3px solid var(--wood-dark);background:var(--cream);display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--wood-dark)}
+.pbtn.main{width:52px;height:52px;background:var(--gold)}
+.pbtn svg{width:16px;height:16px;fill:var(--wood-dark)}
+.pbtn.main svg{width:22px;height:22px}
+.pbtn[disabled]{opacity:.5;cursor:not-allowed}
+.pinfo{min-width:0;display:flex;flex-direction:column;gap:4px}
+.pline{display:flex;justify-content:space-between;gap:12px;align-items:baseline;min-width:0}
+.ptitle{font-weight:900;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;text-shadow:1px 1px 0 var(--wood-dark)}
+.ptitle span{font-weight:700;color:var(--gold-light)}
+.ptime{font-variant-numeric:tabular-nums;font-weight:800;font-size:13px;color:var(--gold-light);white-space:nowrap}
+.seek{-webkit-appearance:none;appearance:none;width:100%;height:12px;border-radius:6px;background:linear-gradient(90deg,var(--gold) var(--p,0%),var(--wood-dark) var(--p,0%));border:2px solid var(--wood-dark);margin:0;cursor:pointer}
+.seek::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--cream);border:3px solid var(--wood-dark)}
+.seek::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--cream);border:3px solid var(--wood-dark)}
+footer{text-align:center;font-size:14px;font-weight:700;color:var(--ink-soft);padding-block:8px 0}
+@media (max-width:720px){
+  .stage-body{grid-template-columns:1fr;padding:16px}
+  .track{gap:10px;padding:10px}
+  .bigplay{width:64px;height:64px}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="inhoud.js"></script>
+<script>
+(function(){
+"use strict";
+var DATA = window.RADIO_BM || {afleveringen:[],muziek:[]};
+var eps = (DATA.afleveringen||[]).slice().sort(function(a,b){ return (b.nummer||0)-(a.nummer||0) || String(b.datum).localeCompare(String(a.datum)); });
+var tracks = (DATA.muziek||[]).filter(function(t){ return t && t.bestand; });
+
+var IC = {
+  play:'<svg viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.4-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg>',
+  pause:'<svg viewBox="0 0 24 24"><rect x="5" y="4" width="5" height="16" rx="1.2"/><rect x="14" y="4" width="5" height="16" rx="1.2"/></svg>',
+  prev:'<svg viewBox="0 0 24 24"><rect x="4" y="5" width="3" height="14" rx="1"/><path d="M20 5.7v12.6a1 1 0 0 1-1.55.83L9.6 13.03a1.2 1.2 0 0 1 0-2.06l8.85-6.1A1 1 0 0 1 20 5.7z"/></svg>',
+  next:'<svg viewBox="0 0 24 24"><rect x="17" y="5" width="3" height="14" rx="1"/><path d="M4 5.7v12.6a1 1 0 0 0 1.55.83l8.85-6.1a1.2 1.2 0 0 0 0-2.06L5.55 4.87A1 1 0 0 0 4 5.7z"/></svg>',
+  mic:'<svg viewBox="0 0 32 32"><rect x="10" y="3" width="12" height="18" rx="6" fill="#ffdc85" stroke="#6e1c18" stroke-width="2"/><path d="M6 15a10 10 0 0 0 20 0M16 25v4M11 29h10" fill="none" stroke="#f5b93f" stroke-width="3" stroke-linecap="round"/></svg>',
+  note:'<svg viewBox="0 0 32 32"><path d="M12 6v15.5a4.5 4.5 0 1 1-3-4.24V8l16-4v13.5a4.5 4.5 0 1 1-3-4.24V7.8L12 10.3" fill="#f5b93f" stroke="#6e1c18" stroke-width="2" stroke-linejoin="round"/></svg>',
+  yt:'<svg viewBox="0 0 24 24"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.76-1.77C18.27 5 12 5 12 5s-6.27 0-7.84.43A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.76 1.77C5.73 19 12 19 12 19s6.27 0 7.84-.43a2.5 2.5 0 0 0 1.76-1.77A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3z"/></svg>'
+};
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+function fmtDate(d){ if(!d) return ""; var p=String(d).split("-"); if(p.length<3) return d; var m=["januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december"]; return (+p[2])+" "+m[(+p[1])-1]+" "+p[0]; }
+function fmtTime(s){ if(!isFinite(s)||s<0) s=0; s=Math.round(s); return Math.floor(s/60)+":"+String(s%60).padStart(2,"0"); }
+function videoId(u){
+  if(!u) return "";
+  try{
+    var x = new URL(u), h = x.hostname.replace(/^www\.|^m\.|^music\./,"");
+    if(h==="youtu.be") return x.pathname.slice(1).split("/")[0];
+    if(h==="youtube.com"||h==="youtube-nocookie.com"){
+      if(x.searchParams.get("v")) return x.searchParams.get("v");
+      var m = x.pathname.match(/^\/(embed|shorts|live|v)\/([\w-]{6,})/); if(m) return m[2];
+    }
+  }catch(e){}
+  return /^[\w-]{11}$/.test(u) ? u : "";
+}
+eps.forEach(function(e){ e._id = videoId(e.youtube); e._ex = /^voorbeeld/i.test(e.titel||""); });
+
+/* ---------- opbouw ---------- */
+var sel = 0;
+var hm = location.hash.match(/^#aflevering-(\d+)$/);
+if(hm){ var f = eps.findIndex(function(e){ return String(e.nummer)===hm[1]; }); if(f>=0) sel=f; }
+
+function render(){
+  var h = '';
+  h += '<header class="topbar gutter"><div class="wrap"><a class="brand" href="#top">Radio <b>BM</b></a><nav class="nav" aria-label="Hoofdmenu"><a href="#afleveringen">Afleveringen</a><a href="#muziek">Muziek</a></nav></div></header>';
+  h += '<div class="hero gutter" id="top"><div class="wrap"><div class="hero-frame"><img src="afbeeldingen/logo.jpg" width="1400" height="672" alt="Radio BM: een gouden microfoon boven een houten bord in de arena van Battle Madness"></div>';
+  h += '<div class="hero-copy"><div><div class="onair"><i></i>Radio Battle Madness</div><p>De podcast en de muziek van Battle Madness, rechtstreeks uit de arena.</p></div><div class="cta-row"><a class="btn red" href="#afleveringen">Afleveringen</a><a class="btn" href="#muziek">Muziek luisteren</a></div></div></div></div>';
+  h += '<main>';
+  h += '<section id="afleveringen" class="gutter"><div class="wrap"><div class="banner-head"><div class="banner">'+IC.mic+'<h2>Afleveringen</h2></div><div class="meta">'+(eps.length? eps.length+(eps.length===1?' aflevering':' afleveringen'):'')+'</div></div>';
+  if(!eps.length){
+    h += '<div class="empty"><strong>Nog geen afleveringen</strong>De eerste aflevering komt er binnenkort aan.</div>';
+  } else {
+    h += '<div class="stage" id="stage"></div>';
+    if(eps.length>1) h += '<div class="ep-grid" id="epGrid"></div>';
+  }
+  h += '</div></section>';
+  h += '<section id="muziek" class="gutter"><div class="wrap"><div class="banner-head"><div class="banner">'+IC.note+'<h2>Muziek</h2></div><div class="meta">'+(tracks.length? tracks.length+(tracks.length===1?' nummer':' nummers'):'')+'</div>'+(tracks.length?'<div class="push"><button class="btn red" id="playAll">'+IC.play+'Alles afspelen</button></div>':'')+'</div>';
+  h += '<div class="board">'+(tracks.length? '<ol class="tracklist">'+tracks.map(trackRow).join('')+'</ol>' : '<div class="empty"><strong>Nog geen nummers</strong>De eerste nummers komen er binnenkort aan.</div>')+'</div>';
+  h += '</div></section>';
+  h += '<footer class="gutter"><div class="wrap">Radio BM · Radio Battle Madness</div></footer></main>';
+  h += playerHtml();
+  document.getElementById("app").innerHTML = h;
+  renderStage(false); renderGrid(); bind(); syncPlayer();
+}
+
+function renderStage(autoplay){
+  var st = document.getElementById("stage"); if(!st) return;
+  var e = eps[sel];
+  var label = sel===0 ? 'Nieuwste aflevering' : 'Aflevering '+esc(e.nummer);
+  var v = '<div class="video">';
+  if(e._id && autoplay){
+    v += '<iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(e._id)+'?autoplay=1&rel=0" title="'+esc(e.titel)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+  } else if(e._id){
+    v += '<button class="thumb" id="startVideo" aria-label="Speel aflevering '+esc(e.nummer)+' af"><span class="tag">'+label+'</span><img src="https://i.ytimg.com/vi/'+encodeURIComponent(e._id)+'/hqdefault.jpg" alt=""><span class="bigplay">'+IC.play+'</span></button>';
+  } else {
+    v += '<span class="tag">'+label+'</span><div class="novideo"><div><span class="num">#'+esc(e.nummer)+'</span>'+(e._ex?'Voorbeeld: voeg de YouTube-link toe in inhoud.js':'Video volgt binnenkort')+'</div></div>';
+  }
+  v += '</div>';
+  v += '<div class="stage-body"><div><div class="ep-date">'+esc(fmtDate(e.datum))+(e._ex?'<span class="example">Voorbeeld</span>':'')+'</div><h3>'+esc(e.titel)+'</h3></div>'+
+    (e._id?'<a class="btn small red" href="https://www.youtube.com/watch?v='+encodeURIComponent(e._id)+'" target="_blank" rel="noopener">'+IC.yt+'Op YouTube</a>':'<span></span>')+
+    (e.omschrijving?'<p class="ep-desc">'+esc(e.omschrijving)+'</p>':'')+'</div>';
+  st.innerHTML = v;
+  var sv = document.getElementById("startVideo");
+  if(sv) sv.onclick = function(){ audio.pause(); renderStage(true); };
+}
+function renderGrid(){
+  var g = document.getElementById("epGrid"); if(!g) return;
+  g.innerHTML = eps.map(function(e,i){
+    var cur = i===sel;
+    return '<button class="ep-card" data-ep="'+i+'" aria-current="'+cur+'"><div class="ep-thumb">'+(e._id?'<img loading="lazy" src="https://i.ytimg.com/vi/'+encodeURIComponent(e._id)+'/mqdefault.jpg" alt="">':'')+'<span class="badge">#'+esc(e.nummer)+'</span></div>'+
+      '<div class="info">'+(cur?'<span class="now-tag">Nu geselecteerd</span>':'')+'<div class="ep-date">'+esc(fmtDate(e.datum))+(e._ex?'<span class="example">Voorbeeld</span>':'')+'</div><h3>'+esc(e.titel)+'</h3></div></button>';
+  }).join('');
+  g.querySelectorAll("[data-ep]").forEach(function(b){ b.onclick = function(){
+    sel = +b.dataset.ep;
+    history.replaceState(null,"","#aflevering-"+eps[sel].nummer);
+    var auto = !!eps[sel]._id; if(auto) audio.pause();
+    renderStage(auto); renderGrid();
+    document.getElementById("stage").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth", block:"start"});
+  }; });
+}
+function trackRow(t,i){
+  return '<li class="track" data-i="'+i+'"><button class="tplay" data-play="'+i+'" aria-label="Speel '+esc(t.titel)+'">'+IC.play+'</button><div class="tinfo"><div class="ttitle">'+esc(t.titel)+'<span class="eq" hidden><i></i><i></i><i></i></span></div>'+(t.artiest?'<div class="tartist">'+esc(t.artiest)+'</div>':'')+'</div><span class="tdur" data-dur="'+i+'"></span></li>';
+}
+function playerHtml(){
+  var has = tracks.length>0, d = has?'':' disabled';
+  return '<div class="player gutter"><div class="wrap"><div class="controls"><button class="pbtn" id="pPrev" aria-label="Vorige"'+d+'>'+IC.prev+'</button><button class="pbtn main" id="pPlay" aria-label="Afspelen"'+d+'>'+IC.play+'</button><button class="pbtn" id="pNext" aria-label="Volgende"'+d+'>'+IC.next+'</button></div>'+
+    '<div class="pinfo"><div class="pline"><div class="ptitle" id="pTitle">'+(has?'Kies een nummer':'Nog geen muziek')+'</div><div class="ptime" id="pTime">0:00 / 0:00</div></div><input class="seek" id="pSeek" type="range" min="0" max="1000" value="0" aria-label="Positie in nummer"'+d+'></div></div></div>';
+}
+
+/* ---------- muziekspeler ---------- */
+var audio = new Audio(); audio.preload = "metadata";
+var cur = -1, seeking = false;
+function playIdx(i){
+  var t = tracks[i]; if(!t) return;
+  if(cur!==i){ cur=i; audio.src = t.bestand; }
+  var p = audio.play(); if(p&&p.catch) p.catch(function(){});
+  // stop een lopende video
+  var fr = document.querySelector("#stage iframe"); if(fr) renderStage(false);
+  if("mediaSession" in navigator){ try{ navigator.mediaSession.metadata = new MediaMetadata({title:t.titel, artist:t.artiest||"Radio BM", album:"Radio BM", artwork:[{src:"afbeeldingen/logo.jpg", sizes:"1400x672", type:"image/jpeg"}]}); }catch(e){} }
+  syncPlayer();
+}
+function toggle(){ if(cur<0) return playIdx(0); if(audio.paused) playIdx(cur); else audio.pause(); }
+function next(){ if(tracks.length) playIdx(cur<0?0:(cur+1)%tracks.length); }
+function prev(){ if(!tracks.length) return; if(audio.currentTime>3){ audio.currentTime=0; return; } playIdx(cur<=0?tracks.length-1:cur-1); }
+audio.addEventListener("ended", function(){ if(cur<tracks.length-1) next(); else syncPlayer(); });
+["play","pause","loadedmetadata"].forEach(function(ev){ audio.addEventListener(ev, syncPlayer); });
+audio.addEventListener("timeupdate", syncTime);
+if("mediaSession" in navigator){ try{ navigator.mediaSession.setActionHandler("nexttrack", next); navigator.mediaSession.setActionHandler("previoustrack", prev); }catch(e){} }
+
+function syncTime(){
+  var seek = document.getElementById("pSeek"), time = document.getElementById("pTime"); if(!seek) return;
+  var d = audio.duration||0;
+  if(!seeking){ var v = d? Math.round(audio.currentTime/d*1000):0; seek.value=v; seek.style.setProperty("--p",(v/10)+"%"); }
+  time.textContent = fmtTime(audio.currentTime)+" / "+fmtTime(d);
+}
+function syncPlayer(){
+  var t = tracks[cur], playing = t && !audio.paused, pp = document.getElementById("pPlay");
+  pp.innerHTML = playing?IC.pause:IC.play; pp.setAttribute("aria-label", playing?"Pauze":"Afspelen");
+  if(t) document.getElementById("pTitle").innerHTML = esc(t.titel)+(t.artiest?' <span>· '+esc(t.artiest)+'</span>':'');
+  document.querySelectorAll(".track").forEach(function(li){
+    var i=+li.dataset.i, on=i===cur;
+    li.classList.toggle("now",on); li.classList.toggle("paused",on&&!playing);
+    li.querySelector(".eq").hidden = !on;
+    li.querySelector(".tplay").innerHTML = (on&&playing)?IC.pause:IC.play;
+  });
+  syncTime();
+}
+function loadDurations(){
+  tracks.forEach(function(t,i){
+    var a = new Audio(); a.preload="metadata";
+    a.onloadedmetadata = function(){ var el=document.querySelector('[data-dur="'+i+'"]'); if(el && isFinite(a.duration)) el.textContent = fmtTime(a.duration); a.src=""; };
+    a.src = t.bestand;
+  });
+}
+function bind(){
+  var pa = document.getElementById("playAll"); if(pa) pa.onclick = function(){ playIdx(0); };
+  document.getElementById("pPlay").onclick = toggle;
+  document.getElementById("pNext").onclick = next;
+  document.getElementById("pPrev").onclick = prev;
+  var seek = document.getElementById("pSeek");
+  seek.oninput = function(){ seeking=true; seek.style.setProperty("--p",(seek.value/10)+"%"); };
+  seek.onchange = function(){ if(audio.duration&&cur>=0) audio.currentTime = seek.value/1000*audio.duration; seeking=false; syncTime(); };
+  document.querySelectorAll("[data-play]").forEach(function(b){ b.onclick = function(){ var i=+b.dataset.play; if(i===cur&&!audio.paused) audio.pause(); else playIdx(i); }; });
+}
+
+render();
+loadDurations();
+})();
+</script>
+</body>
+</html>
