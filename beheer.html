@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Radio BM Beheer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@500;700;800;900&display=swap">
+<style>
+/* Beheer: zelfde arena-kleuren, rustiger opgezet — verbinding, afleveringen, muziek, publiceerbalk onderaan */
+:root{
+  --sky-deep:#3a6cb7; --sand:#e6c48f; --sand-light:#f1dcb6; --wood:#6e4524; --wood-dark:#3d240f; --wood-light:#946033;
+  --gold:#f5b93f; --gold-light:#ffdc85; --cream:#fdf3dc; --banner:#a5302a; --banner-dark:#6e1c18;
+  --ink:#2b1a0b; --ink-soft:#5c4127; --ok:#2f7a33;
+  --display:"Luckiest Guy","Arial Black",Impact,sans-serif;
+  --body:"Nunito",ui-rounded,"Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sand);color:var(--ink);font:500 16px/1.5 var(--body);-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+button{font:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sky-deep);outline-offset:2px;border-radius:6px}
+.gutter{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:900px;margin:0 auto}
+.topbar{background:var(--sky-deep);border-bottom:4px solid var(--wood-dark);padding-top:env(safe-area-inset-top,0px)}
+.topbar .wrap{display:flex;align-items:center;gap:12px;min-height:58px;flex-wrap:wrap;padding-block:6px}
+.brand{font-family:var(--display);font-size:22px;color:var(--cream);text-decoration:none;text-shadow:2px 2px 0 var(--wood-dark)}
+.brand b{color:var(--gold);font-weight:400}
+.brand small{font-family:var(--body);font-weight:900;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-light);text-shadow:none;margin-left:8px}
+.conn{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--cream);font-weight:800;font-size:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:rgba(0,0,0,.2);border-radius:999px;padding:4px 10px}
+.chip i{width:8px;height:8px;border-radius:50%;background:#7fd47a}
+main{padding-block:28px 140px}
+.panel{background:var(--cream);border:3px solid var(--wood-dark);border-radius:14px;box-shadow:0 4px 0 var(--wood-dark);padding:20px;margin-bottom:26px}
+h1,h2{font-family:var(--display);font-weight:400;letter-spacing:.03em;line-height:1.1;margin:0 0 6px}
+h1{font-size:28px}
+h2{font-size:24px;color:var(--banner)}
+.lede{margin:0 0 16px;color:var(--ink-soft);max-width:62ch}
+.head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.head .count{color:var(--ink-soft);font-weight:800}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.form .full{grid-column:1/-1}
+label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);min-width:0}
+label .opt{text-transform:none;letter-spacing:0;font-weight:700}
+input,textarea{font:600 16px/1.4 var(--body);color:var(--ink);background:#fff;border:2px solid var(--wood);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
+textarea{min-height:80px;resize:vertical}
+input[type=file]{background:var(--sand-light);padding:7px}
+.check{flex-direction:row;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:15px;font-weight:700;color:var(--ink)}
+.check input{width:auto}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-size:16px;letter-spacing:.04em;line-height:1;padding:11px 16px 9px;border-radius:10px;border:3px solid var(--wood-dark);text-decoration:none;color:var(--wood-dark);background:var(--gold);box-shadow:0 3px 0 var(--wood-dark)}
+.btn:hover{background:var(--gold-light)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--wood-dark)}
+.btn.red{background:var(--banner);color:var(--cream)}
+.btn.plain{background:#fff}
+.btn.small{font-size:13px;padding:7px 10px 5px;border-width:2px;box-shadow:0 2px 0 var(--wood-dark)}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none}
+.link{background:none;border:0;padding:0;color:var(--cream);text-decoration:underline;font-weight:800}
+.msg{font-weight:800;font-size:14px;color:var(--ink-soft)}
+.msg.err{color:var(--banner)}
+.msg.ok{color:var(--ok)}
+.help{background:var(--sand-light);border-radius:10px;padding:12px 14px;font-size:15px;margin-top:16px}
+.help ol{margin:6px 0 0;padding-left:20px}
+.help li{margin-bottom:4px}
+.preview{display:flex;gap:12px;align-items:center;font-size:14px;color:var(--ink-soft);font-weight:700}
+.preview img{width:120px;aspect-ratio:16/9;object-fit:cover;border-radius:6px;border:2px solid var(--wood-dark);background:var(--wood)}
+.list{list-style:none;margin:18px 0 0;padding:0;border-top:2px solid var(--sand)}
+.item{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-bottom:2px solid var(--sand)}
+.item .thumb{width:96px;aspect-ratio:16/9;border-radius:6px;border:2px solid var(--wood-dark);background:linear-gradient(160deg,var(--wood-light),var(--wood-dark));object-fit:cover;display:grid;place-items:center;font-family:var(--display);color:var(--gold);font-size:20px}
+.item .num{width:40px;height:40px;border-radius:8px;background:var(--wood);color:var(--gold);display:grid;place-items:center;font-family:var(--display);font-size:16px;border:2px solid var(--wood-dark)}
+.item .t{font-weight:900;overflow-wrap:anywhere}
+.item .s{font-size:14px;color:var(--ink-soft);font-weight:700;overflow-wrap:anywhere}
+.item .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.item.editing{background:var(--gold-light);border-radius:8px}
+.tagnew{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:var(--ok);color:#fff;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+.del{font-size:13px;font-weight:900;background:#fff;border:2px solid var(--banner);color:var(--banner);border-radius:7px;padding:5px 9px}
+.del.confirm{background:var(--banner);color:var(--cream)}
+.mini{font-size:13px;font-weight:900;background:#fff;border:2px solid var(--wood);color:var(--wood-dark);border-radius:7px;padding:5px 9px}
+.mini[disabled]{opacity:.35;cursor:default}
+.empty{color:var(--ink-soft);font-weight:700;padding:14px 0}
+.pubbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:linear-gradient(var(--wood-light),var(--wood));border-top:4px solid var(--wood-dark);padding-bottom:env(safe-area-inset-bottom,0px);color:var(--cream)}
+.pubbar .wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding-block:12px}
+.pubbar .state{font-weight:900;flex:1 1 220px;min-width:0;text-shadow:1px 1px 0 var(--wood-dark)}
+.pubbar .state.err{color:var(--gold-light)}
+.loading{padding:40px 0;text-align:center;font-weight:800;color:var(--ink-soft)}
+@media (max-width:640px){
+  .form{grid-template-columns:1fr}
+  .item{grid-template-columns:minmax(0,1fr);gap:6px}
+  .item .thumb,.item .num{display:none}
+  .item .acts{justify-content:flex-start}
+}
+</style>
+</head>
+<body>
+<header class="topbar gutter"><div class="wrap">
+  <a class="brand" href="./">Radio <b>BM</b><small>Beheer</small></a>
+  <div class="conn" id="conn" hidden></div>
+</div></header>
+
+<main class="gutter"><div class="wrap" id="view"></div></main>
+
+<div class="pubbar gutter" id="pubbar" hidden><div class="wrap">
+  <div class="state" id="pubState" role="status"></div>
+  <button class="btn plain small" id="discardBtn">Wijzigingen weggooien</button>
+  <button class="btn red" id="publishBtn">Publiceren</button>
+</div></div>
+
+<script>
+(function(){
+"use strict";
+var API = "https://api.github.com";
+var CFG_KEY = "radiobm-beheer";
+var MAX_MB = 50;
+
+/* ---------- opslag van de verbinding op dit apparaat ---------- */
+function loadCfg(){
+  var raw = null;
+  try{ raw = localStorage.getItem(CFG_KEY) || sessionStorage.getItem(CFG_KEY); }catch(e){}
+  try{ return raw ? JSON.parse(raw) : null; }catch(e){ return null; }
+}
+function saveCfg(c, remember){
+  try{ localStorage.removeItem(CFG_KEY); sessionStorage.removeItem(CFG_KEY); (remember?localStorage:sessionStorage).setItem(CFG_KEY, JSON.stringify(c)); }catch(e){}
+}
+function clearCfg(){ try{ localStorage.removeItem(CFG_KEY); sessionStorage.removeItem(CFG_KEY); }catch(e){} }
+function guessRepo(){
+  var h = location.hostname, m = h.match(/^([^.]+)\.github\.io$/i);
+  if(!m) return {owner:"", repo:""};
+  var seg = location.pathname.split("/").filter(Boolean)[0];
+  if(seg && /\.html$/i.test(seg)) seg = "";
+  return {owner:m[1], repo: seg || (m[1]+".github.io")};
+}
+
+var cfg = loadCfg();
+var data = null, loadedSha = null;
+var pending = {count:0, uploads:{}, deletes:[]}; // uploads: pad -> File
+var editEp = null, editTr = null, confirmKey = null, busy = false;
+
+/* ---------- hulpjes ---------- */
+var view = document.getElementById("view");
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+function fmtDate(d){ if(!d) return ""; var p=String(d).split("-"); if(p.length<3) return d; var m=["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"]; return (+p[2])+" "+m[(+p[1])-1]+" "+p[0]; }
+function videoId(u){
+  if(!u) return "";
+  try{ var x=new URL(u), h=x.hostname.replace(/^www\.|^m\.|^music\./,"");
+    if(h==="youtu.be") return x.pathname.slice(1).split("/")[0];
+    if(h==="youtube.com"||h==="youtube-nocookie.com"){ if(x.searchParams.get("v")) return x.searchParams.get("v"); var m=x.pathname.match(/^\/(embed|shorts|live|v)\/([\w-]{6,})/); if(m) return m[2]; }
+  }catch(e){}
+  return "";
+}
+function b64ToText(b64){ var bin=atob(b64.replace(/\s/g,"")), u=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return new TextDecoder().decode(u); }
+function bytesToB64(u8){ var s="", CH=0x8000; for(var i=0;i<u8.length;i+=CH) s+=String.fromCharCode.apply(null,u8.subarray(i,i+CH)); return btoa(s); }
+function textToB64(t){ return bytesToB64(new TextEncoder().encode(t)); }
+function fileToB64(f){ return new Promise(function(res,rej){ var r=new FileReader(); r.onload=function(){ res(String(r.result).split(",")[1]||""); }; r.onerror=function(){ rej(new Error("lezen")); }; r.readAsDataURL(f); }); }
+function slug(s){ return String(s).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,60) || "nummer"; }
+function repoPath(){ return "/repos/"+encodeURIComponent(cfg.owner)+"/"+encodeURIComponent(cfg.repo); }
+function siteUrl(){
+  if(cfg.repo.toLowerCase()===(cfg.owner+".github.io").toLowerCase()) return "https://"+cfg.owner+".github.io/";
+  return "https://"+cfg.owner+".github.io/"+cfg.repo+"/";
+}
+
+async function gh(path, opts){
+  opts = opts || {};
+  var headers = {"Accept":"application/vnd.github+json","Authorization":"Bearer "+cfg.token,"X-GitHub-Api-Version":"2022-11-28"};
+  if(opts.body) headers["Content-Type"] = "application/json";
+  var r;
+  try{ r = await fetch(API+path, {method:opts.method||"GET", headers:headers, body:opts.body?JSON.stringify(opts.body):undefined, cache:"no-store"}); }
+  catch(e){ var ne = new Error("Geen verbinding met GitHub. Controleer je internet."); ne.status = 0; throw ne; }
+  if(!r.ok){
+    var d = null; try{ d = await r.json(); }catch(e){}
+    var err = new Error(ghMessage(r.status, d)); err.status = r.status; throw err;
+  }
+  return r.status===204 ? null : r.json();
+}
+function ghMessage(st, d){
+  if(st===401) return "De sleutel klopt niet of is verlopen. Maak een nieuwe aan en verbind opnieuw.";
+  if(st===403) return "Deze sleutel mag niet schrijven in de repository. Geef hem bij ‘Contents’ de rechten ‘Read and write’.";
+  if(st===404) return "Repository of bestand niet gevonden. Controleer de namen en of de sleutel toegang heeft tot deze repository.";
+  if(st===409||st===422) return "Er is intussen ergens anders iets aangepast. Laad de pagina opnieuw en probeer het nog eens.";
+  return "GitHub gaf een fout ("+st+(d&&d.message?": "+d.message:"")+"). Probeer het opnieuw.";
+}
+
+/* ---------- scherm: verbinden ---------- */
+function showSetup(msg){
+  $("conn").hidden = true; $("pubbar").hidden = true;
+  var g = cfg || guessRepo();
+  view.innerHTML =
+    '<section class="panel"><h1>Inloggen bij het beheer</h1><p class="lede">Het beheer slaat je wijzigingen op in je GitHub-repository. Daarvoor heb je eenmalig een sleutel (token) nodig die alleen toegang heeft tot deze site.</p>'+
+    '<form class="form" id="setupForm" novalidate>'+
+    '<label>GitHub-gebruikersnaam<input id="sOwner" autocomplete="username" value="'+esc(g.owner||"")+'"></label>'+
+    '<label>Naam van de repository<input id="sRepo" value="'+esc(g.repo||"")+'"></label>'+
+    '<label class="full">Sleutel (token)<input id="sToken" type="password" autocomplete="off" placeholder="github_pat_…"></label>'+
+    '<label class="full">Branch <span class="opt">(meestal main)</span><input id="sBranch" value="'+esc((cfg&&cfg.branch)||"main")+'"></label>'+
+    '<label class="check full"><input type="checkbox" id="sRemember" checked> Onthoud mij op dit apparaat</label>'+
+    '<div class="row full"><button class="btn" type="submit">Verbinden</button><span class="msg'+(msg?' err':'')+'" id="sMsg" role="status">'+esc(msg||"")+'</span></div></form>'+
+    '<div class="help"><strong>Zo maak je een sleutel</strong><ol>'+
+    '<li>Ga op GitHub naar <b>Settings → Developer settings → Personal access tokens → Fine-grained tokens</b> en klik op <b>Generate new token</b>.</li>'+
+    '<li>Kies bij <b>Repository access</b> voor <b>Only select repositories</b> en selecteer alleen de repository van deze site.</li>'+
+    '<li>Zet onder <b>Permissions → Repository permissions</b> de optie <b>Contents</b> op <b>Read and write</b>.</li>'+
+    '<li>Kies een vervaldatum, klik op <b>Generate token</b> en plak de sleutel hierboven.</li></ol>'+
+    'Deel deze sleutel met niemand. Op een gedeelde computer zet je ‘Onthoud mij’ uit.</div></section>';
+  $("setupForm").onsubmit = async function(e){
+    e.preventDefault();
+    var c = {owner:$("sOwner").value.trim(), repo:$("sRepo").value.trim(), token:$("sToken").value.trim(), branch:$("sBranch").value.trim()||"main"};
+    if(!c.owner||!c.repo) return setMsg("sMsg","Vul je gebruikersnaam en de naam van de repository in.",true);
+    if(!c.token) return setMsg("sMsg","Plak je sleutel in het veld Sleutel.",true);
+    cfg = c; setMsg("sMsg","Verbinden…");
+    try{
+      var r = await gh(repoPath());
+      if(r.permissions && !r.permissions.push) throw Object.assign(new Error(ghMessage(403)),{status:403});
+      saveCfg(cfg, $("sRemember").checked);
+      await loadData();
+    }catch(err){ setMsg("sMsg", err.message, true); }
+  };
+}
+function setMsg(id,t,err,ok){ var m=$(id); if(m){ m.textContent=t; m.className="msg"+(err?" err":"")+(ok?" ok":""); } }
+
+/* ---------- inhoud laden ---------- */
+async function loadData(){
+  view.innerHTML = '<div class="loading">Inhoud ophalen uit GitHub…</div>';
+  try{
+    var f = await gh(repoPath()+"/contents/inhoud.js?ref="+encodeURIComponent(cfg.branch));
+    var text = b64ToText(f.content), w = {};
+    try{ new Function("window", text)(w); }catch(e){ throw new Error("inhoud.js bevat een fout en kan niet worden gelezen. Herstel het bestand op GitHub of zet de originele versie terug."); }
+    var d = w.RADIO_BM || {};
+    data = {afleveringen: Array.isArray(d.afleveringen)?d.afleveringen:[], muziek: Array.isArray(d.muziek)?d.muziek:[]};
+    loadedSha = f.sha;
+    pending = {count:0, uploads:{}, deletes:[]};
+    editEp = editTr = confirmKey = null;
+    showEditor();
+  }catch(err){
+    if(err.status===401) { clearCfg(); return showSetup(err.message); }
+    view.innerHTML = '<section class="panel"><h2>Laden mislukt</h2><p class="lede">'+esc(err.message)+'</p><div class="row"><button class="btn" id="retry">Opnieuw proberen</button><button class="btn plain" id="reconnect">Andere repository of sleutel</button></div></section>';
+    $("retry").onclick = loadData;
+    $("reconnect").onclick = function(){ showSetup(""); };
+  }
+}
+
+/* ---------- scherm: beheren ---------- */
+function showEditor(){
+  var c = $("conn"); c.hidden = false;
+  c.innerHTML = '<span class="chip"><i></i>'+esc(cfg.owner+"/"+cfg.repo)+'</span><a class="link" href="'+esc(siteUrl())+'" target="_blank" rel="noopener">Bekijk site</a><button class="link" id="logout">Uitloggen</button>';
+  $("logout").onclick = function(){ if(pending.count && !window.__confirmLogout){ window.__confirmLogout = true; setPub("Je hebt nog wijzigingen. Klik nogmaals op Uitloggen om ze weg te gooien.", true); return; } clearCfg(); cfg=null; pending={count:0,uploads:{},deletes:[]}; showSetup(""); };
+  renderEditor();
+}
+function renderEditor(){
+  var eps = data.afleveringen.map(function(e,i){ return {e:e,i:i}; }).sort(function(a,b){ return (b.e.nummer||0)-(a.e.nummer||0); });
+  var nextNr = data.afleveringen.reduce(function(m,e){ return Math.max(m, +e.nummer||0); }, 0) + 1;
+  var ep = editEp!=null ? data.afleveringen[editEp] : {nummer:nextNr, datum:new Date().toISOString().slice(0,10)};
+  var h = '';
+  // afleveringen
+  h += '<section class="panel"><div class="head"><h2>Afleveringen</h2><span class="count">'+data.afleveringen.length+'</span></div>';
+  h += '<form class="form" id="epForm" novalidate><h3 class="full" style="margin:0;font-size:16px">'+(editEp!=null?'Aflevering #'+esc(ep.nummer)+' bewerken':'Nieuwe aflevering')+'</h3>'+
+    '<label class="full">YouTube-link<input id="eUrl" type="url" value="'+esc(ep.youtube||"")+'" placeholder="https://www.youtube.com/watch?v=…"></label>'+
+    '<div class="preview full" id="ePrev"></div>'+
+    '<label class="full">Titel<input id="eTitle" maxlength="140" value="'+esc(ep.titel||"")+'"></label>'+
+    '<label>Nummer<input id="eNr" type="number" min="0" value="'+esc(ep.nummer)+'"></label>'+
+    '<label>Datum<input id="eDate" type="date" value="'+esc(ep.datum||"")+'"></label>'+
+    '<label class="full">Omschrijving <span class="opt">(optioneel)</span><textarea id="eDesc" maxlength="800">'+esc(ep.omschrijving||"")+'</textarea></label>'+
+    '<div class="row full"><button class="btn" type="submit">'+(editEp!=null?'Wijziging bewaren':'Aflevering toevoegen')+'</button>'+(editEp!=null?'<button class="btn plain" type="button" id="eCancel">Annuleren</button>':'')+'<span class="msg" id="eMsg" role="status"></span></div></form>';
+  h += eps.length ? '<ul class="list">'+eps.map(function(x){
+      var e=x.e, id=videoId(e.youtube), k="ep:"+x.i;
+      return '<li class="item'+(editEp===x.i?' editing':'')+'">'+(id?'<img class="thumb" alt="" loading="lazy" src="https://i.ytimg.com/vi/'+encodeURIComponent(id)+'/mqdefault.jpg">':'<span class="thumb">#'+esc(e.nummer)+'</span>')+
+        '<div><div class="t">#'+esc(e.nummer)+' · '+esc(e.titel)+'</div><div class="s">'+esc(fmtDate(e.datum))+(id?'':' · geen YouTube-link')+'</div></div>'+
+        '<div class="acts"><button class="mini" data-edit-ep="'+x.i+'">Bewerken</button><button class="del'+(confirmKey===k?' confirm':'')+'" data-del="'+k+'">'+(confirmKey===k?'Zeker?':'Verwijderen')+'</button></div></li>';
+    }).join('')+'</ul>' : '<p class="empty">Nog geen afleveringen.</p>';
+  h += '</section>';
+  // muziek
+  var tr = editTr!=null ? data.muziek[editTr] : {};
+  h += '<section class="panel"><div class="head"><h2>Muziek</h2><span class="count">'+data.muziek.length+'</span></div>';
+  h += '<form class="form" id="trForm" novalidate><h3 class="full" style="margin:0;font-size:16px">'+(editTr!=null?'Nummer bewerken':'Nieuw nummer')+'</h3>'+
+    (editTr!=null?'':'<label class="full">Audiobestand <span class="opt">(mp3 of m4a, max. '+MAX_MB+' MB)</span><input id="tFile" type="file" accept="audio/*,.mp3,.m4a,.ogg,.wav"></label>')+
+    '<label>Titel<input id="tTitle" maxlength="120" value="'+esc(tr.titel||"")+'"></label>'+
+    '<label>Artiest <span class="opt">(optioneel)</span><input id="tArtist" maxlength="120" value="'+esc(tr.artiest||"")+'"></label>'+
+    '<div class="row full"><button class="btn" type="submit">'+(editTr!=null?'Wijziging bewaren':'Nummer toevoegen')+'</button>'+(editTr!=null?'<button class="btn plain" type="button" id="tCancel">Annuleren</button>':'')+'<span class="msg" id="tMsg" role="status"></span></div></form>';
+  h += data.muziek.length ? '<ul class="list">'+data.muziek.map(function(t,i){
+      var k="tr:"+i, isNew = !!pending.uploads[t.bestand];
+      return '<li class="item'+(editTr===i?' editing':'')+'"><span class="num">'+(i+1)+'</span><div><div class="t">'+esc(t.titel)+(isNew?'<span class="tagnew">Nieuw</span>':'')+'</div><div class="s">'+esc(t.artiest||"")+(t.artiest?' · ':'')+esc(t.bestand)+'</div></div>'+
+        '<div class="acts"><button class="mini" data-move="'+i+':-1" aria-label="Omhoog"'+(i===0?' disabled':'')+'>↑</button><button class="mini" data-move="'+i+':1" aria-label="Omlaag"'+(i===data.muziek.length-1?' disabled':'')+'>↓</button><button class="mini" data-edit-tr="'+i+'">Bewerken</button><button class="del'+(confirmKey===k?' confirm':'')+'" data-del="'+k+'">'+(confirmKey===k?'Zeker?':'Verwijderen')+'</button></div></li>';
+    }).join('')+'</ul>' : '<p class="empty">Nog geen nummers.</p>';
+  h += '</section>';
+  view.innerHTML = h;
+  bindEditor();
+  updatePubBar();
+}
+
+function bindEditor(){
+  var url = $("eUrl"), prev = $("ePrev");
+  function showPrev(){ var id=videoId(url.value.trim()); prev.innerHTML = id ? '<img alt="" src="https://i.ytimg.com/vi/'+encodeURIComponent(id)+'/mqdefault.jpg"><span>Video gevonden</span>' : (url.value.trim()?'<span style="color:var(--banner)">Dit lijkt geen YouTube-link</span>':''); }
+  url.oninput = showPrev; showPrev();
+  $("epForm").onsubmit = function(e){
+    e.preventDefault();
+    var u = url.value.trim(), t = $("eTitle").value.trim();
+    if(u && !videoId(u)) return setMsg("eMsg","Plak een link van youtube.com of youtu.be.",true);
+    if(!t) return setMsg("eMsg","Geef de aflevering een titel.",true);
+    var item = {nummer:parseInt($("eNr").value,10)||0, titel:t, datum:$("eDate").value, youtube:u, omschrijving:$("eDesc").value.trim()};
+    if(editEp!=null) data.afleveringen[editEp] = item; else data.afleveringen.push(item);
+    editEp = null; change(); renderEditor(); setMsg("eMsg","Klaar. Klik onderaan op Publiceren om het online te zetten.",false,true);
+  };
+  if($("eCancel")) $("eCancel").onclick = function(){ editEp=null; renderEditor(); };
+
+  var tf = $("tFile");
+  if(tf) tf.onchange = function(){ var f=tf.files[0], ti=$("tTitle"); if(f && !ti.value) ti.value = f.name.replace(/\.[^.]+$/,"").replace(/[_]+/g," "); };
+  $("trForm").onsubmit = function(e){
+    e.preventDefault();
+    var t = $("tTitle").value.trim(), a = $("tArtist").value.trim();
+    if(editTr!=null){
+      if(!t) return setMsg("tMsg","Geef het nummer een titel.",true);
+      data.muziek[editTr].titel = t; data.muziek[editTr].artiest = a;
+      editTr = null; change(); renderEditor(); return;
+    }
+    var f = tf.files[0];
+    if(!f) return setMsg("tMsg","Kies eerst een audiobestand.",true);
+    if(f.size > MAX_MB*1024*1024) return setMsg("tMsg","Dit bestand is groter dan "+MAX_MB+" MB. Kies een kleinere versie.",true);
+    var ext = (f.name.match(/\.([a-z0-9]{2,4})$/i)||[,"mp3"])[1].toLowerCase();
+    if(!t) t = f.name.replace(/\.[^.]+$/,"");
+    var base = "muziek/"+slug(t), path = base+"."+ext, n = 2;
+    var taken = function(p){ return data.muziek.some(function(x){ return x.bestand===p; }); };
+    while(taken(path)) path = base+"-"+(n++)+"."+ext;
+    data.muziek.push({titel:t, artiest:a, bestand:path});
+    pending.uploads[path] = f;
+    pending.deletes = pending.deletes.filter(function(p){ return p!==path; });
+    change(); renderEditor(); setMsg("tMsg","Toegevoegd. Klik onderaan op Publiceren om het te uploaden.",false,true);
+  };
+  if($("tCancel")) $("tCancel").onclick = function(){ editTr=null; renderEditor(); };
+
+  view.querySelectorAll("[data-edit-ep]").forEach(function(b){ b.onclick=function(){ editEp=+b.dataset.editEp; confirmKey=null; renderEditor(); $("epForm").scrollIntoView({block:"start"}); }; });
+  view.querySelectorAll("[data-edit-tr]").forEach(function(b){ b.onclick=function(){ editTr=+b.dataset.editTr; confirmKey=null; renderEditor(); $("trForm").scrollIntoView({block:"start"}); }; });
+  view.querySelectorAll("[data-move]").forEach(function(b){ b.onclick=function(){
+    var p=b.dataset.move.split(":"), i=+p[0], j=i+(+p[1]); var m=data.muziek; var x=m[i]; m[i]=m[j]; m[j]=x; editTr=null; change(); renderEditor(); }; });
+  view.querySelectorAll("[data-del]").forEach(function(b){ b.onclick=function(){
+    var k=b.dataset.del; if(confirmKey!==k){ confirmKey=k; renderEditor(); return; }
+    confirmKey=null; editEp=null; editTr=null; var p=k.split(":"), i=+p[1];
+    if(p[0]==="ep"){ data.afleveringen.splice(i,1); }
+    else { var t=data.muziek.splice(i,1)[0];
+      if(pending.uploads[t.bestand]) delete pending.uploads[t.bestand];
+      else if(/^muziek\//.test(t.bestand)) pending.deletes.push(t.bestand); }
+    change(); renderEditor(); }; });
+}
+
+/* ---------- publiceren ---------- */
+function change(){ pending.count++; window.__confirmLogout=false; }
+function setPub(t, err){ var s=$("pubState"); s.textContent=t; s.className="state"+(err?" err":""); }
+function updatePubBar(){
+  var bar = $("pubbar");
+  if(!pending.count){ bar.hidden = true; return; }
+  bar.hidden = false;
+  var up = Object.keys(pending.uploads).length;
+  setPub(pending.count+(pending.count===1?" wijziging":" wijzigingen")+" nog niet gepubliceerd"+(up?" · "+up+(up===1?" nummer":" nummers")+" te uploaden":""));
+  $("publishBtn").disabled = busy; $("discardBtn").disabled = busy;
+}
+function buildInhoud(){
+  return "/*\n  RADIO BM — inhoud van de site\n  Dit bestand wordt bijgewerkt via beheer.html. Met de hand aanpassen mag ook;\n  houd dan dezelfde opbouw aan.\n*/\n\nwindow.RADIO_BM = " + JSON.stringify({afleveringen:data.afleveringen, muziek:data.muziek}, null, 2) + ";\n";
+}
+async function publish(){
+  if(busy) return;
+  busy = true; updatePubBar();
+  try{
+    setPub("Controleren…");
+    var cur = await gh(repoPath()+"/contents/inhoud.js?ref="+encodeURIComponent(cfg.branch));
+    if(cur.sha !== loadedSha) throw new Error("Iemand heeft de inhoud intussen ergens anders aangepast. Gooi je wijzigingen weg om de nieuwste versie te laden.");
+    var ref = await gh(repoPath()+"/git/ref/heads/"+encodeURIComponent(cfg.branch));
+    var headSha = ref.object.sha;
+    var head = await gh(repoPath()+"/git/commits/"+headSha);
+    var tree = [];
+    var paths = Object.keys(pending.uploads);
+    for(var i=0;i<paths.length;i++){
+      setPub("Nummer "+(i+1)+" van "+paths.length+" uploaden…");
+      var b64 = await fileToB64(pending.uploads[paths[i]]);
+      var blob = await gh(repoPath()+"/git/blobs", {method:"POST", body:{content:b64, encoding:"base64"}});
+      tree.push({path:paths[i], mode:"100644", type:"blob", sha:blob.sha});
+    }
+    setPub("Opslaan…");
+    var ib = await gh(repoPath()+"/git/blobs", {method:"POST", body:{content:textToB64(buildInhoud()), encoding:"base64"}});
+    tree.push({path:"inhoud.js", mode:"100644", type:"blob", sha:ib.sha});
+    var existing = {};
+    pending.deletes.forEach(function(p){ if(!existing[p]){ existing[p]=1; tree.push({path:p, mode:"100644", type:"blob", sha:null}); } });
+    var newTree;
+    try{ newTree = await gh(repoPath()+"/git/trees", {method:"POST", body:{base_tree:head.tree.sha, tree:tree}}); }
+    catch(err){
+      // een te verwijderen bestand bestond niet (meer): sla verwijderen over
+      if(err.status===422 && pending.deletes.length){ tree = tree.filter(function(t){ return t.sha!==null; }); newTree = await gh(repoPath()+"/git/trees", {method:"POST", body:{base_tree:head.tree.sha, tree:tree}}); }
+      else throw err;
+    }
+    var commit = await gh(repoPath()+"/git/commits", {method:"POST", body:{message:"Radio BM: inhoud bijgewerkt via beheer", tree:newTree.sha, parents:[headSha]}});
+    await gh(repoPath()+"/git/refs/heads/"+encodeURIComponent(cfg.branch), {method:"PATCH", body:{sha:commit.sha}});
+    busy = false;
+    pending = {count:0, uploads:{}, deletes:[]};
+    var fresh = await gh(repoPath()+"/contents/inhoud.js?ref="+encodeURIComponent(cfg.branch)).catch(function(){ return null; });
+    loadedSha = fresh ? fresh.sha : null;
+    renderEditor();
+    var bar = $("pubbar"); bar.hidden = false;
+    setPub("Gepubliceerd. De site is over 1 à 2 minuten bijgewerkt.");
+    $("publishBtn").hidden = true; $("discardBtn").hidden = true;
+    setTimeout(function(){ if(!pending.count){ bar.hidden = true; } $("publishBtn").hidden = false; $("discardBtn").hidden = false; }, 6000);
+  }catch(err){
+    busy = false; updatePubBar();
+    setPub(err.message, true);
+  }
+}
+$("publishBtn").onclick = publish;
+$("discardBtn").onclick = function(){
+  if(busy) return;
+  if(!window.__confirmDiscard){ window.__confirmDiscard = true; setPub("Klik nogmaals om je wijzigingen weg te gooien.", true); setTimeout(function(){ window.__confirmDiscard=false; },4000); return; }
+  window.__confirmDiscard = false; loadData();
+};
+window.addEventListener("beforeunload", function(e){ if(pending.count){ e.preventDefault(); e.returnValue = ""; } });
+
+/* ---------- start ---------- */
+if(cfg && cfg.token) loadData(); else showSetup("");
+})();
+</script>
+</body>
+</html>

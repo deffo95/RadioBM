@@ -149,9 +149,8 @@ footer{text-align:center;font-size:14px;font-weight:700;color:var(--ink-soft);pa
 </head>
 <body>
 <div id="app"></div>
-<script src="inhoud.js"></script>
 <script>
-(function(){
+function radioBmStart(){
 "use strict";
 var DATA = window.RADIO_BM || {afleveringen:[],muziek:[]};
 var eps = (DATA.afleveringen||[]).slice().sort(function(a,b){ return (b.nummer||0)-(a.nummer||0) || String(b.datum).localeCompare(String(a.datum)); });
@@ -313,7 +312,9 @@ function bind(){
 
 render();
 loadDurations();
-})();
+}
+// inhoud.js altijd vers laden, zodat wijzigingen uit het beheer meteen zichtbaar zijn
+(function(){ var s=document.createElement("script"); s.src="inhoud.js?v="+Date.now(); s.onload=s.onerror=radioBmStart; document.head.appendChild(s); })();
 </script>
 </body>
 </html>

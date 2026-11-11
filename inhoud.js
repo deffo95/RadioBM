@@ -1,7 +1,8 @@
 /*
   RADIO BM — inhoud van de site
   ==============================
-  Dit is het enige bestand dat je hoeft aan te passen.
+  Het makkelijkst pas je dit aan via beheer.html op je site.
+  Met de hand aanpassen kan ook, zoals hieronder beschreven.
 
   NIEUWE AFLEVERING TOEVOEGEN
   Kopieer een blok tussen { en } in de lijst "afleveringen" en vul het in:
@@ -26,11 +27,11 @@
 window.RADIO_BM = {
   afleveringen: [
     {
-      nummer: 6,
-      titel: "Aflevering 6",
-      datum: "2026-11-08",
-      youtube: "https://www.youtube.com/watch?v=veBNjinJpCo",
-      omschrijving: ""
+      nummer: 2,
+      titel: "Voorbeeld: de beste strategieën voor BM3",
+      datum: "2026-11-04",
+      youtube: "",
+      omschrijving: "Dit is een voorbeeld. Vervang dit blok door je eigen aflevering met de YouTube-link erbij."
     },
     {
       nummer: 1,
