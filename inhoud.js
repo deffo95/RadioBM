@@ -19,6 +19,41 @@ window.RADIO_BM = {
       "datum": "2026-11-01",
       "youtube": "https://www.youtube.com/watch?v=i5_wLx5P9ik",
       "omschrijving": ""
+    },
+    {
+      "nummer": 4,
+      "titel": "Aflevering 4",
+      "datum": "2026-10-25",
+      "youtube": "https://www.youtube.com/watch?v=VlRj6WQlYl0",
+      "omschrijving": ""
+    },
+    {
+      "nummer": 3,
+      "titel": "Aflevering 3",
+      "datum": "2026-10-18",
+      "youtube": "https://www.youtube.com/watch?v=gkA5chBnPgA",
+      "omschrijving": ""
+    },
+    {
+      "nummer": 2,
+      "titel": "Aflevering 2",
+      "datum": "2026-10-12",
+      "youtube": "https://www.youtube.com/watch?v=pI3gg1T5hfI",
+      "omschrijving": ""
+    },
+    {
+      "nummer": 1,
+      "titel": "Aflevering 1",
+      "datum": "2026-10-05",
+      "youtube": "https://www.youtube.com/watch?v=Z13IWXuu_IQ",
+      "omschrijving": ""
+    },
+    {
+      "nummer": 0,
+      "titel": "Aflevering 0 - De opening!",
+      "datum": "2026-09-21",
+      "youtube": "https://www.youtube.com/watch?v=X2-TsHopcIA",
+      "omschrijving": ""
     }
   ],
   "muziek": []
