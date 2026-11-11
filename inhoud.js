@@ -61,6 +61,11 @@ window.RADIO_BM = {
       "titel": "Battle Madness 3 Anthem",
       "artiest": "The Grand BM Choir",
       "bestand": "muziek/battle-madness-3-anthem.mp3"
+    },
+    {
+      "titel": "Hear Ye Hear Ye",
+      "artiest": "The Herald",
+      "bestand": "muziek/hear-ye-hear-ye.mp3"
     }
   ]
 };
