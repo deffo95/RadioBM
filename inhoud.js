@@ -68,6 +68,11 @@ window.RADIO_BM = {
       "bestand": "muziek/hear-ye-hear-ye.mp3"
     },
     {
+      "titel": "Battle Madness",
+      "artiest": "Goldboy",
+      "bestand": "muziek/battle-madness.mp3"
+    },
+    {
       "titel": "Beneath the Old and Open Sky",
       "artiest": "The Old Guard",
       "bestand": "muziek/beneath-the-old-and-open-sky.mp3",
